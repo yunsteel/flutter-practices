@@ -4,7 +4,5 @@ import 'package:hello_world/screen/home_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MaterialApp(
-    home: HomeScreen(),
-  ));
+  runApp(MaterialApp(home: HomeScreen()));
 }

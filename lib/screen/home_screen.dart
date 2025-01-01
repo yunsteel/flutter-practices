@@ -1,52 +1,54 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/services.dart';
 
-class HomeScreen extends StatelessWidget {
-  WebViewController webViewController = WebViewController()
-    ..loadRequest(Uri.parse("https://scinapse.io"))
-    ..setJavaScriptMode(JavaScriptMode.unrestricted);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-  HomeScreen({Key? key}) : super(key: key);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final PageController pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      int? nextPage = pageController.page?.toInt();
+
+      if (nextPage == null) {
+        return;
+      }
+
+      if (nextPage == 4) {
+        nextPage = 0;
+      } else {
+        nextPage++;
+      }
+
+      pageController.animateToPage(nextPage,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text(
-          "Scinapse world",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                webViewController.goBack();
-              },
-              icon: Icon(
-                Icons.arrow_left,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () {
-                webViewController.goForward();
-              },
-              icon: Icon(
-                Icons.arrow_right,
-              )),
-          IconButton(
-              onPressed: () {
-                webViewController.loadRequest(Uri.parse("https://scinapse.io"));
-              },
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
+        body: PageView(
+      controller: pageController,
+      children: [1, 2, 3, 4, 5]
+          .map((num) => Image.asset(
+                "assets/img/image_$num.png",
+                fit: BoxFit.cover,
               ))
-        ],
-      ),
-      body: WebViewWidget(
-        controller: webViewController,
-      ),
-    );
+          .toList(),
+    ));
   }
 }
