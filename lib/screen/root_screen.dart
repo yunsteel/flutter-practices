@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hello_world/screen/home_screen.dart';
 import 'package:hello_world/screen/settings_screen.dart';
+import 'package:shake/shake.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({Key? key}) : super(key: key);
@@ -15,12 +18,26 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
   TabController? tabController;
   double threshold = 2.7;
   int number = 1;
+  ShakeDetector? shakeDetector;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     tabController?.addListener(tabListener);
+
+    shakeDetector = ShakeDetector.autoStart(
+        shakeSlopTimeMS: 100,
+        shakeThresholdGravity: threshold,
+        onPhoneShake: onPhoneShake);
+  }
+
+  void onPhoneShake() {
+    final rand = Random();
+
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
   }
 
   @override
@@ -69,5 +86,6 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     tabController?.removeListener(tabListener);
+    shakeDetector?.stopListening();
   }
 }
