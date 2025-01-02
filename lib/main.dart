@@ -10,12 +10,12 @@ void main() {
           textTheme: TextTheme(
               headlineLarge: TextStyle(
                   color: Colors.white,
-                  fontSize: 60,
+                  fontSize: 50,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'LandryGothic'),
               headlineMedium: TextStyle(
                   color: Colors.white,
-                  fontSize: 40,
+                  fontSize: 35,
                   fontWeight: FontWeight.w500,
                   fontFamily: 'LandryGothic'),
               bodyLarge: TextStyle(color: Colors.white, fontSize: 30))),

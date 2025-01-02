@@ -34,19 +34,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onHeartPressed() {
     showCupertinoDialog(
+        barrierDismissible: true,
         context: context,
         builder: (BuildContext context) {
-          return CupertinoDatePicker(
-            onDateTimeChanged: (DateTime date) {
-              print(date);
-            },
-            mode: CupertinoDatePickerMode.date,
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.white,
+              height: 300,
+              child: CupertinoDatePicker(
+                onDateTimeChanged: (DateTime date) {
+                  setState(() {
+                    if (date.isAfter(DateTime.now())) {
+                      return;
+                    }
+                    firstDay = date;
+                  });
+                },
+                mode: CupertinoDatePickerMode.date,
+              ),
+            ),
           );
         });
-
-    // setState(() {
-    //   firstDay = firstDay.subtract(Duration(days: 1));
-    // });
   }
 }
 
@@ -54,7 +63,7 @@ class _DDay extends StatelessWidget {
   final GestureTapCallback onHeartPressed;
   final DateTime firstDay;
 
-  _DDay({required this.onHeartPressed, required this.firstDay});
+  const _DDay({required this.onHeartPressed, required this.firstDay});
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +94,14 @@ class _DDay extends StatelessWidget {
         ),
         const SizedBox(
           height: 20,
+        ),
+        Text(
+          "우리 처음 만난 날",
+          style: textTheme.bodyLarge,
+        ),
+        Text(
+          "${firstDay.year}년 ${firstDay.month}월 ${firstDay.day}일",
+          style: textTheme.bodyLarge,
         ),
         Text(
           "D+${DateTime(now.year, now.month, now.day).difference(firstDay).inDays + 1}",
