@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/screen/home_screen.dart';
+import 'package:hello_world/const/colors.dart';
+import 'package:hello_world/screen/root_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MaterialApp(
       theme: ThemeData(
+          scaffoldBackgroundColor: backgroundColor,
+          sliderTheme: SliderThemeData(
+              thumbColor: primaryColor,
+              activeTickMarkColor: primaryColor,
+              inactiveTrackColor: primaryColor.withValues(
+                alpha: 8.3,
+              )),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: backgroundColor,
+              selectedItemColor: primaryColor,
+              unselectedItemColor: secondaryColor),
           fontFamily: 'Onglip', // 기본
           textTheme: TextTheme(
               headlineLarge: TextStyle(
@@ -19,5 +31,5 @@ void main() {
                   fontWeight: FontWeight.w500,
                   fontFamily: 'LandryGothic'),
               bodyLarge: TextStyle(color: Colors.white, fontSize: 30))),
-      home: HomeScreen()));
+      home: RootScreen()));
 }
