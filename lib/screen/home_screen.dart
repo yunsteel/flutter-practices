@@ -1,39 +1,97 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world/const/colors.dart';
+import 'package:flutter/services.dart';
 
-class HomeScreen extends StatelessWidget {
-  final int number;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-  const HomeScreen({Key? key, required this.number}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeScreen();
+  }
+}
+
+const minBpm = 50;
+const maxBpm = 200;
+
+class _HomeScreen extends State<HomeScreen> {
+  int bpm = 100;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _playBeep() {
+    print("object");
+    // await AudioPlayer().play(AssetSource("sound/beep.mp3"));
+    SystemSound.play(SystemSoundType.click);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    // _player.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Center(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: Image.asset("assets/img/$number.png")),
+        Image.asset(
+          "assets/img/image_1.png",
+          fit: BoxFit.cover,
         ),
         SizedBox(
-          height: 32,
+          height: 20,
         ),
         Text(
-          "행운의 숫자",
+          "$bpm bpm",
           style: TextStyle(
-              color: secondaryColor, fontSize: 20, fontWeight: FontWeight.w700),
+              fontSize: 70, fontWeight: FontWeight.w700, color: Colors.white),
         ),
-        SizedBox(
-          height: 12,
+        Slider(
+          value: bpm.floorToDouble(),
+          onChanged: (double value) {
+            setState(() {
+              bpm = value.floor();
+            });
+          },
+          min: minBpm.toDouble(),
+          max: maxBpm.toDouble(),
+          divisions: maxBpm - minBpm,
         ),
-        Text(
-          number.toString(),
-          style: TextStyle(
-              color: primaryColor, fontSize: 60, fontWeight: FontWeight.w200),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () => _playBeep()
+                // _timer = Timer.periodic(
+                //     Duration(milliseconds: (60000 / bpm).floor()),
+                //     (Timer timer) {
+                //   _playBeep();
+                // });
+                ,
+                child: Text("클릭")),
+            SizedBox(
+              width: 20,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  _timer.cancel();
+                },
+                child: Text(
+                  "멈춰!",
+                ))
+          ],
         )
       ],
-    );
+    ));
   }
 }

@@ -8,12 +8,6 @@ void main() {
   runApp(MaterialApp(
       theme: ThemeData(
           scaffoldBackgroundColor: backgroundColor,
-          sliderTheme: SliderThemeData(
-              thumbColor: primaryColor,
-              activeTickMarkColor: primaryColor,
-              inactiveTrackColor: primaryColor.withValues(
-                alpha: 8.3,
-              )),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
               backgroundColor: backgroundColor,
               selectedItemColor: primaryColor,
